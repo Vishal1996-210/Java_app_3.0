@@ -17,3 +17,4 @@ apt-get install jenkins -y
 jenkins --version //2.462.2
 systemctl status jenkins
 docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
+Create Sonar token for Jenkins
