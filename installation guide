@@ -1,20 +1,29 @@
 apt-get update -y
-apt-get install openjdk-11-jre-headless -y
-java --version //openjdk 11.0.24
+//apt-get install openjdk-11-jre-headless -y
+apt-get install openjdk-17-jdk -y
+java --version //openjdk 17.0.12
+
+apt-get update -y
 apt-get install git -y
 git --version //git version 2.43.0
+
+apt-get update -y
 apt-get install maven -y
 mvn --version //Apache Maven 3.8.7
+
+apt-get update -y
 apt-get install docker.io -y
 docker --version //Docker version 24.0.7
+chmod 777 /var/run/docker.sock
 systemctl status docker
 systemctl start docker
 systemctl enable docker
+
 apt-get update -y
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 apt-get install jenkins -y
 jenkins --version //2.462.2
 systemctl status jenkins
+
 docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
-Create Sonar token for Jenkins
