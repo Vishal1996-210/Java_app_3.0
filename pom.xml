@@ -75,6 +75,15 @@
           </plugin>
         </plugins>
     </build>
-
+         <distributionManagement>
+             <repository>
+                 <id>my-repo</id>
+                 <url>https://github.com/Vishal1996-210/Java_app_3.0.git/maven-releases/</url>
+             </repository>
+             <snapshotRepository>
+                 <id>my-snapshots-repo</id>
+                 <url>https://github.com/Vishal1996-210/Java_app_3.0.git/maven-snapshots/</url>
+             </snapshotRepository>
+         </distributionManagement>
 
 </project>
