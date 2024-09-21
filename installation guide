@@ -1,1 +1,12 @@
 apt-get update -y
+apt-get install openjdk-11-jre-headless -y
+java --version //openjdk 11.0.24
+apt-get install git -y
+git --version //git version 2.43.0
+apt-get install maven -y
+mvn --version //Apache Maven 3.8.7
+apt-get install docker.io -y
+docker --version //Docker version 24.0.7
+systemctl status docker
+systemctl start docker
+systemctl enable docker
