@@ -10,9 +10,12 @@ pipeline{
         string(name: 'DockerHubUser', description: "name of the Application", defaultValue: 'chowvishal')
     }
     stages{
+        //Stage Name: It's labeled as 'Git Checkout', which clearly indicates its purpose.
+        //when block ensures that this stage runs only when the params.action is set to 'create'.
         stage('Git Checkout'){
             when { expression {  params.action == 'create' } }
             steps{
+                //The gitCheckout function pulls the code from the specified branch and repository.
                 gitCheckout(
                     branch: "main",
                     url: "https://github.com/Vishal1996-210/Java_app_3.0.git"
@@ -23,6 +26,7 @@ pipeline{
             when { expression {  params.action == 'create' } }
             steps{
                 script{
+                    //Calls the mvnTest() function to run your tests.
                     mvnTest()
                 }
             }
