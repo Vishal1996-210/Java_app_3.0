@@ -8,7 +8,7 @@ pipeline{
         string(name: 'ImageName', description: "Name of the docker build", defaultValue: "kubernetes-configmap-reload")
         string(name: 'ImageTag', description: "Name of the docker build",defaultValue: "v1")
         string(name: 'AppName', description: "Name of the Application",defaultValue: "kubernetes-configmap-reload")
-        string(name: 'docker_repo', description: "Name of docker repository",defaultValue: "chowvishal")
+        string(name: 'DockerHubUser', description: "Name of docker repository",defaultValue: "chowvishal")
     }
     stages{
         //Stage Name: It's labeled as 'Git Checkout', which clearly indicates its purpose.
