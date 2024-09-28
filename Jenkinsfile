@@ -4,10 +4,11 @@ pipeline{
     agent any
     //agent { label 'Demo' }
     parameters{
-        choice(name: 'action', choices: 'create\ndelete', description: 'Choose create/Destroy')
-        string(name: 'ImageName', description: "name of the docker build", defaultValue: 'javapp')
-        string(name: 'ImageTag', description: "tag of the docker build", defaultValue: 'v1')
-        string(name: 'DockerHubUser', description: "name of the Application", defaultValue: 'chowvishal')
+        choice(name: 'action', choices: 'create\nrollback', description: 'Create/rollback of the deployment')
+        string(name: 'ImageName', description: "Name of the docker build", defaultValue: "kubernetes-configmap-reload")
+        string(name: 'ImageTag', description: "Name of the docker build",defaultValue: "v1")
+        string(name: 'AppName', description: "Name of the Application",defaultValue: "kubernetes-configmap-reload")
+        string(name: 'docker_repo', description: "Name of docker repository",defaultValue: "chowvishal")
     }
     stages{
         //Stage Name: It's labeled as 'Git Checkout', which clearly indicates its purpose.
@@ -96,6 +97,36 @@ pipeline{
                     dockerImageCleanup("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
                 }
             }
-        }      
+        }   
+        stage("Ansible Setup") {
+            when {
+                expression { params.action == 'create' }
+            }
+            steps {
+                sh 'ansible-playbook ${WORKSPACE}/kubernetes-configmap-reload/server_setup.yml'
+            }
+        }
+        stage("Create deployment") {
+            when {
+                expression { params.action == 'create' }
+            }
+            steps {
+                sh 'echo ${WORKSPACE}'
+                sh 'kubectl create -f ${WORKSPACE}/kubernetes-configmap-reload/kubernetes-configmap.yml'
+            }
+        }
+        stage ("wait_for_pods"){
+            steps{
+                sh 'sleep 300'
+            }
+        }
+        stage("rollback deployment") {
+            steps {	            	         	           
+                sh """
+                kubectl delete deploy ${params.AppName}
+                kubectl delete svc ${params.AppName}
+                """	       
+            }
+        }
     }
 }
