@@ -35,11 +35,57 @@ jenkins --version //2.462.2
 systemctl status jenkins
 http://<EC2_PUBLIC _IP>:8080/
 Dashboard -> Manage Jenkins -> Plugins -> Available plugins // Sonar Gerrit, Sonar Quality Gates, SonarQube Scanner, SonarQube Generic Coverage, Quality Gates, Artifactory & Jfrog
-Dashboard -> New Item -> Give any Item name -> Select pipeline -> Ok 
-Pipeline -> select defination as pipeline script from SCM -> select SCM as Git -> Give GIT repository URL -> Give branch name as master/main -> Give script path as Jenkinsfile(as per the file name) -> Save
-//Integrate All tools with Jenkins
-Jenkins Dashboard -> Manage Jenkins -> system -> SonarQube installations -> add sonarqube -> Give name as sonar-api -> Give server URL as http://<EC2_PUBLIC _IP>:9000 -> save
-Jenkins Dashboard -> Manage Jenkins -> system -> SonarQube installations -> Add (Jenkins) -> select domain as Global credentials(unrestricted) -> kind as secret text -> scope as global -> secret as 
+Dashboard -> New Item -> Give any Item name -> Select pipeline -> Ok // Create Pipeline
+  1) Go to Pipeline
+  2) Select defination as pipeline script from SCM
+  3) Select SCM as Git
+  4) Enter GIT repository URL
+  5) Enter branch name master/main (As per GitHub Branch)
+  6) Enter script path as Jenkinsfile(as per the file name available in GitHub)
+  7) Save
+Jenkins Dashboard -> Manage Jenkins -> system -> SonarQube installations // Integrate Sonarqube with Jenkins
+  1) Click on add sonarqube
+  2) Enter name as sonar-api
+  3) Enter server URL as http://<EC2_PUBLIC _IP>:9000
+  4) Select Server authentication token as sonarqube-api
+      1) Click on Add -> Jenkins
+      2) Select domain as Global credentials(unrestricted)
+      3) Select kind as secret text
+      4) Select scope as global
+      5) Paste the sonarqube token in secret
+      6) Enter ID as sonarqube-api
+  5) Save
+Dashboard -> Manage Jenkins -> Credentials -> System -> Global credentials (unrestricted) - add credential // Add docker HUB credentials in Jenkins
+  1) Select kind as Username with password
+  2) Select scope as global
+  3) Enter dockerhub username
+  4) Enter dockerhub password
+  5) Enter ID as docker
+  6) Create
+Jenkins Dashboard -> Manage Jenkins -> System -> Global Untrusted Pipeline Libraries // Add Jenkins Shared library in Jenkins
+  1) Click on Add
+  2) Enter name as my-shared-library (As per Jenkinsfile)
+  3) Enter default version as main (As per GitHub Branch)
+  4) Enter project repository as https://github.com/Vishal1996-210/jenkins_shared_lib.git
+  5) Save
 
+//Assign administration privileges to jenkins user
+vi /etc/sudoers
+jenkins ALL=(ALL) NOPASSWD: ALL // Add the following line at the end of the file
+su - jenkins // Now we can use Jenkins as root user
+pwd // /var/lib/jenkins
 
+//Install and Setup AWS
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo apt-get install unzip
+unzip awscliv2.zip
+sudo ./aws/install --update
+aws –version // aws-cli-2.17.61
+
+//EKSCTL INSTALLATION
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version // 0.191.0
+
+In the upper right corner of the console, choose your account name or number and then choose Security Credentials. In the Access keys section, choose Create access key
 
