@@ -1,5 +1,5 @@
 @Library('my-shared-library') _
-// This is jenkins shared library
+
 pipeline{
     agent any
     //agent { label 'Demo' }
